@@ -7,30 +7,71 @@ var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+var eslint = require('gulp-eslint');
+var mocha = require('gulp-mocha');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
+var del = require('del');
+require('babel-register')({
+  presets: ['es2015']
+
+});
+var srcDir = 'src/**/*.js';
+var testDir = 'test/**/*.js';
 
 gulp.task('default', () => {
-  return gulp.src('src/**/*.js')
+  return gulp.src(srcDir)
   .pipe(babel())
   .pipe(gulp.dest('dist'));
 });
 
-gulp.task('javascript', () => {
+gulp.task('build', ['bundle'], ()=> {
+  console.log('Check the folders');
+});
+
+gulp.task('watch', ['clean'], () => {
+  gulp.watch([srcDir, testDir], ['lint', 'test']);
+});
+
+gulp.task('clean', () => {
+  del(['build/*', 'dist/*'], {dot: true});
+});
+
+gulp.task('lint', () => {
+  gulp.src([srcDir])
+    .pipe(eslint({
+      extends: 'airbnb'
+    }))
+    .pipe(eslint.format());
+});
+
+gulp.task('test', () => {
+  gulp.src(testDir, {read: false})
+    .pipe(mocha({
+      reporter: 'spec',
+      compilers: 'js:babel-core/register'
+    }));
+});
+
+gulp.task('babel', () => {
+  gulp.src([srcDir])
+    .pipe(babel({presets:['es2015']}))
+    .pipe(gulp.dest('build/'));
+});
+
+gulp.task('bundle', ['babel'], () => {
   // set up the browserify instance on a task basis
   var b = browserify({
-    entries: 'src/index.js',
+    entries: 'build/',
     debug: true
   });
 
   return b.bundle()
     .pipe(source('index.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
     // Add transformation tasks to the pipeline here.
-    .pipe(babel())
-    .pipe(uglify())
     .on('error', gutil.log)
-    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/'));
 });
+
