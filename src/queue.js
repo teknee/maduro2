@@ -1,14 +1,23 @@
 import { $size, $data } from './symbols';
 
-class Bag {
+class Queue {
   constructor() {
     this[$data] = [];
     this[$size] = 0;
   }
 
-  add(item) {
+  enqueue(item) {
     this[$data].push(item);
     ++this[$size];
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return null;
+    }
+
+    --this[$size];
+    return this[$data].shift();
   }
 
   isEmpty() {
@@ -20,10 +29,10 @@ class Bag {
   }
 
   forEach(fn) {
-    this[$data].forEach((item, i) => {
-      fn.call(this, item, i);
-    });
+    while (!this.isEmpty()) {
+      fn.call(this, this.dequeue(), this.size());
+    }
   }
 }
 
-export default Bag;
+export default Queue;
