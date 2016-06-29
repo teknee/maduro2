@@ -17,8 +17,13 @@ describe('Main', () => {
   it('should have stack', () => {
     expect(Maduro).to.have.property('stack');
   });
-  
+
   it('should have fixedStack', () => {
     expect(Maduro).to.have.property('fixedStack');
   });
+
+  it('should have linkedList', () => {
+    expect(Maduro).to.have.property('linkedList');
+  });
+
 });
