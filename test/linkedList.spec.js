@@ -133,21 +133,6 @@ describe('LinkedList', () => {
     });
   });
 
-  describe('addFirst', () => {
-    it('should add the item at the beginning of the list', () => {
-      l.addFirst(1);
-
-      expect(l.getFirst()).to.equal(1);
-      expect(l.size()).to.equal(1);
-
-      l.addFirst(2);
-
-      expect(l.getFirst()).to.equal(2);
-      expect(l.size()).to.equal(2);
-
-    });
-  });
-
   describe('addAtIndex', () => {
     beforeEach(() => {
       for (var i = 0; i < 5; i++) {
@@ -166,6 +151,7 @@ describe('LinkedList', () => {
       expect(l.get(1)).to.equal(6);
       expect(l.size()).to.equal(7);
     });
+
   });
 
   describe('addAllAtIndex', () => {
@@ -200,35 +186,44 @@ describe('LinkedList', () => {
     });
   });
 
-  describe('indexOf', () => {
-    it('should return -1 if the list empty', () => {
-      expect(l.indexOf(1)).to.equal(-1);
-    });
+  describe('addFirst', () => {
+    it('should add the item at the beginning of the list', () => {
+      l.addFirst(1);
 
-    it('should return -1 if the item is not in the list', () => {
-      l.add(1);
+      expect(l.getFirst()).to.equal(1);
+      expect(l.size()).to.equal(1);
 
-      expect(l.indexOf(2)).to.equal(-1);
-    });
+      l.addFirst(2);
 
-    it('should return the index of the item in the list', () => {
-      l.add(1);
-      l.add(2);
+      expect(l.getFirst()).to.equal(2);
+      expect(l.size()).to.equal(2);
 
-      expect(l.indexOf(1)).to.equal(0);
-      expect(l.indexOf(2)).to.equal(1);
     });
   });
 
-  describe('isEmpty', () => {
-    it('should return true if the list empty', () => {
+  describe('clear', () => {
+    it('should remove all items from the list', () => {
+      l.add(1);
+      l.add(2);
+
+      l.clear();
+
       expect(l.isEmpty()).to.be.true;
+      expect(l.size()).to.equal(0);
+    });
+  });
+
+  describe('contains', () => {
+    it('should return true if the item is in the list', () => {
+      l.add(1);
+      expect(l.contains(1)).to.be.true;
+
+      l.add(3);
+      expect(l.contains(3)).to.be.true;
     });
 
-    it('should return false if the list has an item', () => {
-      l.add(1);
-
-      expect(l.isEmpty()).to.be.false;
+    it('should return false if the item is not in the list', () => {
+      expect(l.contains(1)).to.be.false;
     });
   });
 
@@ -254,30 +249,6 @@ describe('LinkedList', () => {
       l.forEach(pushItem);
 
       expect(items).to.eql([0, 1, 2, 3, 4]);
-    });
-  });
-
-  describe('clear', () => {
-    it('should remove all items from the list', () => {
-      l.add(1);
-      l.add(2);
-
-      l.clear();
-
-      expect(l.isEmpty()).to.be.true;
-      expect(l.size()).to.equal(0);
-    });
-  });
-
-  describe('size', () => {
-    it('should return the current size of the list', () => {
-      l.add(1);
-
-      expect(l.size()).to.equal(1);
-
-      l.add(4);
-
-      expect(l.size()).to.equal(2);
     });
   });
 
@@ -323,17 +294,130 @@ describe('LinkedList', () => {
     });
   });
 
-  describe('contains', () => {
-    it('should return true if the item is in the list', () => {
-      l.add(1);
-      expect(l.contains(1)).to.be.true;
-
-      l.add(3);
-      expect(l.contains(3)).to.be.true;
+  describe('indexOf', () => {
+    it('should return -1 if the list empty', () => {
+      expect(l.indexOf(1)).to.equal(-1);
     });
 
-    it('should return false if the item is not in the list', () => {
-      expect(l.contains(1)).to.be.false;
+    it('should return -1 if the item is not in the list', () => {
+      l.add(1);
+
+      expect(l.indexOf(2)).to.equal(-1);
+    });
+
+    it('should return the index of the item in the list', () => {
+      l.add(1);
+      l.add(2);
+
+      expect(l.indexOf(1)).to.equal(0);
+      expect(l.indexOf(2)).to.equal(1);
+    });
+  });
+
+  describe('isEmpty', () => {
+    it('should return true if the list empty', () => {
+      expect(l.isEmpty()).to.be.true;
+    });
+
+    it('should return false if the list has an item', () => {
+      l.add(1);
+
+      expect(l.isEmpty()).to.be.false;
+    });
+  });
+
+  describe('lastIndexOf', () => {
+    beforeEach(() => {
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+    });
+    it('should return the last index of a item in the list', () => {
+      expect(l.lastIndexOf(3)).to.equal(7);
+      expect(l.lastIndexOf(1)).to.equal(5);
+    });
+  });
+
+  describe('remove', () => {
+    beforeEach(() => {
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+    });
+
+    it('should remove and return the first item with the passed in value', () => {
+      expect(l.remove(3)).to.equal(3);
+      expect(l.size()).to.equal(4);
+
+      expect(l.remove(5)).to.equal(5);
+      expect(l.size()).to.equal(3);
+    });
+  });
+
+  describe('removeAtIndex', () => {
+    beforeEach(() => {
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+    });
+
+    it('should remove and return the item at the provided index', () => {
+      expect(l.removeAtIndex(0)).to.equal(1);
+      expect(l.size()).to.equal(4);
+
+      expect(l.removeAtIndex(3)).to.equal(5);
+      expect(l.size()).to.equal(3);
+
+      expect(l.removeAtIndex(1)).to.equal(3);
+      expect(l.size()).to.equal(2);
+    });
+  });
+
+  describe('removeFirst', () => {
+    beforeEach(() => {
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+    });
+
+    it('should remove the first item in the list', () => {
+      expect(l.removeFirst()).to.equal(1);
+      expect(l.size()).to.equal(4);
+
+      expect(l.removeFirst()).to.equal(2);
+      expect(l.size()).to.equal(3);
+    });
+  });
+
+  describe('removeLast', () => {
+    beforeEach(() => {
+      for(let i = 1; i < 6; i++) {
+        l.add(i);
+      }
+    });
+
+    it('should remove the last item in the list', () => {
+      expect(l.removeLast()).to.equal(5);
+      expect(l.size()).to.equal(4);
+
+      expect(l.removeLast()).to.equal(4);
+      expect(l.size()).to.equal(3);
+    });
+  });
+
+  describe('size', () => {
+    it('should return the current size of the list', () => {
+      l.add(1);
+
+      expect(l.size()).to.equal(1);
+
+      l.add(4);
+
+      expect(l.size()).to.equal(2);
     });
   });
 });

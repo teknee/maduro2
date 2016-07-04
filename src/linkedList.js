@@ -50,7 +50,7 @@ class LinkedList {
     let currNode = this[$head];
     let nextNode;
 
-    while(count < i) {
+    while (count < i) {
       currNode = currNode.next;
       nextNode = (currNode) ? currNode.next : null;
       count++;
@@ -64,7 +64,7 @@ class LinkedList {
 
     currNode.next = nextNode;
 
-    if(!!!nextNode) {
+    if (!!!nextNode) {
       this[$tail] = currNode;
     }
   }
@@ -96,7 +96,7 @@ class LinkedList {
     let count = 0;
     let currNode = this[$head].next;
 
-    while(count < i) {
+    while (count < i) {
       currNode = currNode.next;
       ++count;
     }
@@ -117,7 +117,7 @@ class LinkedList {
     let currNode = this[$head].next;
 
     while (currNode !== null) {
-      if (this[$getValue](item) === this[$getValue](currNode.value)) {
+      if (item === this[$getValue](currNode.value)) {
         return count;
       }
 
@@ -128,25 +128,70 @@ class LinkedList {
     return -1;
   }
 
-  lastIndexOf() {}
+  lastIndexOf(item) {
+    let i = 0;
+    let count = 0;
+    let currNode = this[$head].next;
+
+    while (currNode !== null) {
+      if (item === this[$getValue](currNode.value)) {
+        i = count;
+      }
+
+      currNode = currNode.next;
+      ++count;
+    }
+
+    return i;
+  }
 
   remove(item) {
     let currNode = this[$head];
+    let count = 0;
 
-    while(this[$getValue](currNode.value) !== this[$getValue](item)) {
+    while (this[$getValue](currNode.next.value) !== item) {
       currNode = currNode.next;
+      ++count;
     }
 
+    const value = currNode.next.value;
+    currNode.next = currNode.next.next;
+    --this[$size];
 
+    if (count === this[$size]) {
+      this[$tail] = currNode;
+    }
+
+    return value;
   }
 
   removeAtIndex(i) {
+    let count = 0;
+    let currNode = this[$head];
 
+    while (count < i) {
+      currNode = currNode.next;
+      ++count;
+    }
+
+    const value = currNode.next.value;
+    currNode.next = currNode.next.next;
+    --this[$size];
+
+    if (count === this[$size]) {
+      this[$tail] = currNode;
+    }
+
+    return value;
   }
 
-  removeFirst() {}
+  removeFirst() {
+    return this.removeAtIndex(0);
+  }
 
-  removeLast() {}
+  removeLast() {
+    return this.removeAtIndex(this[$size] - 1);
+  }
 
   size() {
     return this[$size];
@@ -169,9 +214,11 @@ class LinkedList {
     let count = 0;
 
     this.forEach((item) => {
-      console.log('index: ' + count + ', item: ' + item);
+      console.log(`index: ${count}, item: ${item}`);
       ++count;
     });
+    console.log('head: ', this[$head]);
+    console.log('tail: ', this[$tail]);
   }
 }
 
