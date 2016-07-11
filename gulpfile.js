@@ -1,6 +1,3 @@
-//TODO: output a min and dev version
-//TODO: get a test task working
-
 var browserify = require('browserify');
 var babel = require('gulp-babel');
 var gulp = require('gulp');
@@ -31,13 +28,13 @@ gulp.task('default', () => {
 gulp.task('build', ['rename:dev', 'rename:prod']);
 
 gulp.task('rename:dev', ['bundle'], () => {
-  gulp.src('build/main.js')
+  return gulp.src('build/main.js')
   .pipe(rename("maduro.js"))
     .pipe(gulp.dest("./dist"));
 });
 
 gulp.task('rename:prod', ['bundle'], () => {
-  gulp.src('build/main.js')
+  return gulp.src('build/main.js')
     .pipe(rename("maduro.min.js"))
     .pipe(uglify())
     .pipe(gulp.dest("./dist"));
@@ -48,11 +45,11 @@ gulp.task('watch', ['clean'], () => {
 });
 
 gulp.task('clean', () => {
-  del(['build/*', 'dist/*'], {dot: true});
+  return del(['build/*', 'dist/*'], {dot: true});
 });
 
 gulp.task('lint', () => {
-  gulp.src([srcDir])
+  return gulp.src([srcDir])
     .pipe(eslint({
       extends: 'airbnb'
     }))
@@ -60,7 +57,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('test', () => {
-  gulp.src(testDir, {read: false})
+  return gulp.src(testDir, {read: false})
     .pipe(mocha({
       reporter: 'spec',
       compilers: 'js:babel-core/register'
@@ -72,7 +69,7 @@ gulp.task('test', () => {
 });
 
 gulp.task('babel', ['clean'], () => {
-  gulp.src([srcDir])
+  return gulp.src([srcDir])
     .pipe(babel({presets:['es2015']}))
     .pipe(gulp.dest('build/'));
 });
