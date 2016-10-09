@@ -13,7 +13,19 @@ describe('Utils', () => {
   it('should have a getUid method', () => {
     expect(Utils).to.have.property('getUid');
   });
-
+  
+  it('should have a mergeSort method', () => {
+    expect(Utils).to.have.property('mergeSort');
+  });
+  
+  it('should have a quickSort method', () => {
+    expect(Utils).to.have.property('quickSort');
+  });
+  
+  it('should have a insertionSort method', () => {
+    expect(Utils).to.have.property('insertionSort');
+  });
+  
   describe('identity', () => {
     it('should return the value that is passed to it', () => {
       var obj = {};
@@ -58,5 +70,43 @@ describe('Utils', () => {
       expect(ids[1]).to.not.equal(ids[2]);
     });
   });
+  
+  describe("Merge sort, Insertion sort, Quick sort", () => {
+    var intArray = [];
+    var objArray = [];
+    var sortedIntArray = [0,1,2,3,4,6,8,8,9];
+    var sortedObjArray = [
+      {value: 0},
+      {value: 1},
+      {value: 2},
+      {value: 3},
+      {value: 4},
+      {value: 6},
+      {value: 8},
+      {value: 8},
+      {value: 9},
+    ];
+    
+    var compareObj = (a, b) => a.value < b.value;
+    
+    beforeEach(() => {
+      intArray = [4,3,6,8,2,8,1,0,9];
+      objArray = [];
+      
+      intArray.forEach( number => objArray.push({value: number}) );
+    });
+    
+    it("should sort the array of integers", () => {
+      expect(Utils.insertionSort(intArray)).to.deep.equal(sortedIntArray);
+      expect(Utils.quickSort(intArray)).to.deep.equal(sortedIntArray);
+      expect(Utils.mergeSort(intArray)).to.deep.equal(sortedIntArray);
+    });
+    
+    it("should sort the array of objects", () => {
+      expect(Utils.insertionSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
+      expect(Utils.quickSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
+      expect(Utils.mergeSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
+    });
+  })
 });
 
