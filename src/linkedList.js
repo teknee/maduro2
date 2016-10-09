@@ -209,17 +209,6 @@ class LinkedList {
       currNode = currNode.next;
     }
   }
-
-  printList() {
-    let count = 0;
-
-    this.forEach((item) => {
-      console.log(`index: ${count}, item: ${item}`);
-      ++count;
-    });
-    console.log('head: ', this[$head]);
-    console.log('tail: ', this[$tail]);
-  }
 }
 
 export default LinkedList;
