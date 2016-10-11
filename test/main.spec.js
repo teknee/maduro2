@@ -14,6 +14,10 @@ describe('Main', () => {
     expect(Maduro).to.have.property('queue');
   });
 
+  it('should have priorityQueue', () => {
+    expect(Maduro).to.have.property('priorityQueue');
+  });
+
   it('should have stack', () => {
     expect(Maduro).to.have.property('stack');
   });
