@@ -26,6 +26,10 @@ describe('Utils', () => {
     expect(Utils).to.have.property('insertionSort');
   });
   
+  it('should have a binarySearch method', () => {
+    expect(Utils).to.have.property('binarySearch');
+  });
+  
   describe('identity', () => {
     it('should return the value that is passed to it', () => {
       var obj = {};
@@ -59,8 +63,8 @@ describe('Utils', () => {
     });
   });
 
-  describe("getUid", () => {
-    it("should return a unique id with each call", () => {
+  describe('getUid', () => {
+    it('should return a unique id with each call', () => {
       var ids = [];
       for (var i = 0; i < 3; i++) {
         ids[i] = Utils.getUid();
@@ -71,7 +75,7 @@ describe('Utils', () => {
     });
   });
   
-  describe("Merge sort, Insertion sort, Quick sort", () => {
+  describe('Merge sort, Insertion sort, Quick sort', () => {
     var intArray = [];
     var objArray = [];
     var sortedIntArray = [0,1,2,3,4,6,8,8,9];
@@ -96,17 +100,50 @@ describe('Utils', () => {
       intArray.forEach( number => objArray.push({value: number}) );
     });
     
-    it("should sort the array of integers", () => {
+    it('should sort the array of integers', () => {
       expect(Utils.insertionSort(intArray)).to.deep.equal(sortedIntArray);
       expect(Utils.quickSort(intArray)).to.deep.equal(sortedIntArray);
       expect(Utils.mergeSort(intArray)).to.deep.equal(sortedIntArray);
     });
     
-    it("should sort the array of objects", () => {
+    it('should sort the array of objects', () => {
       expect(Utils.insertionSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
       expect(Utils.quickSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
       expect(Utils.mergeSort(objArray, compareObj)).to.deep.equal(sortedObjArray);
     });
-  })
+  });
+  
+  describe('binarySearch', () => {
+    let intArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let objArray = [
+      {value: 1},
+      {value: 2},
+      {value: 3},
+      {value: 4},
+      {value: 5},
+      {value: 6},
+      {value: 7},
+      {value: 8},
+      {value: 9},
+    ];
+    
+    it('should return the index of an item a sorted array', () => {
+      expect(Utils.binarySearch(intArray, 1)).to.be.equal(0);
+      expect(Utils.binarySearch(intArray, 9)).to.be.equal(8);
+      expect(Utils.binarySearch(intArray, 4)).to.be.equal(3);
+    });
+    
+    it('should return the index of an object in an array based on key', () => {
+      const accessor = (obj) => obj.value;
+      
+      expect(Utils.binarySearch(objArray, 1, accessor)).to.be.equal(0);
+      expect(Utils.binarySearch(objArray, 9, accessor)).to.be.equal(8);
+      expect(Utils.binarySearch(objArray, 0, accessor)).to.be.equal(-1);
+    });
+    
+    it('should return -1 if the item is not in the array', () => {
+      expect(Utils.binarySearch(intArray, 0)).to.be.equal(-1);
+    });
+  });
 });
 

@@ -125,6 +125,25 @@ class Utils {
 
     return sorted;
   }
+
+  static binarySearch(array, key, keyAccessor = this.identity) {
+    let low = 0;
+    let high = array.length - 1;
+    let mid;
+
+    while (low <= high) {
+      mid = Math.floor(low + (high - low) / 2);
+      if (keyAccessor(array[mid]) > key) {
+        high = mid - 1;
+      } else if (keyAccessor(array[mid]) < key) {
+        low = mid + 1;
+      } else {
+        return mid;
+      }
+    }
+
+    return -1;
+  }
 }
 
 export default Utils;
